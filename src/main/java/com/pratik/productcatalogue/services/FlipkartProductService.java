@@ -10,7 +10,7 @@ import java.util.List;
 public class FlipkartProductService implements ProductService {
     @Override
     public GenericProductDto getProductById(long id) throws ProductNotFoundException {
-        return null;
+        throw new ProductNotFoundException(id);
     }
 
     @Override

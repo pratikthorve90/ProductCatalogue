@@ -44,7 +44,11 @@ public class FakeStoreProductService implements ProductService {
     }
 
     public GenericProductDto getProductById(long id) throws ProductNotFoundException {
-            return convertToGenericProductDTO(thirdPartyProductService.getProductById(id));
+        FakeStoreProductDTO fakeStoreProductDTO = thirdPartyProductService.getProductById(id);
+        if (fakeStoreProductDTO == null) {
+            throw new ProductNotFoundException(id);
+        }
+        return convertToGenericProductDTO(fakeStoreProductDTO);
     }
 
     public GenericProductDto createProduct(GenericProductDto genericProductDto) {

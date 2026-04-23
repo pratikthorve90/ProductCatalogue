@@ -5,8 +5,10 @@ import com.pratik.productcatalogue.thirdpartyclients.ThirdPartyProductService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
@@ -29,8 +31,16 @@ public class FakeStoreProductClient implements ThirdPartyProductService {
     public FakeStoreProductDTO getProductById(long id) {
         RestTemplate restTemplate = restTemplateBuilder.build();
         String url = fakeStoreApiUrl + "/" + id;
-        ResponseEntity<FakeStoreProductDTO> response = restTemplate.getForEntity(url, FakeStoreProductDTO.class);
-        return response.getBody();
+        try {
+            ResponseEntity<FakeStoreProductDTO> response =
+                    restTemplate.getForEntity(url, FakeStoreProductDTO.class);
+            return response.getBody();
+        } catch (HttpClientErrorException ex) {
+            if (HttpStatus.NOT_FOUND.equals(ex.getStatusCode())) {
+                return null;
+            }
+            throw ex;
+        }
     }
 
     public FakeStoreProductDTO createProduct(FakeStoreProductDTO fakeStoreProductDTO) {

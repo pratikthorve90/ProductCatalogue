@@ -1,8 +1,15 @@
 package com.pratik.productcatalogue.exceptions;
 
-public class ProductNotFoundException extends  Exception {
+public class ProductNotFoundException extends Exception {
 
-    public ProductNotFoundException(long id) {
-        super("Product not found with id " + id);
+    private final long productId;
+
+    public ProductNotFoundException(long productId) {
+        super("Product not found with id " + productId);
+        this.productId = productId;
+    }
+
+    public long getProductId() {
+        return productId;
     }
 }
