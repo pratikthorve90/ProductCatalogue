@@ -1,4 +1,4 @@
-package com.pratik.productcatalogue.dtos;
+package com.pratik.productcatalogue.thirdpartyclients.fakestore;
 
 import lombok.Getter;
 import lombok.Setter;
